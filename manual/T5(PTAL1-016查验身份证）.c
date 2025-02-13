@@ -1,0 +1,94 @@
+#include<stdio.h>
+int main()
+{
+	int N,i,j,k,flag=0,f[1000]={0},sum[1000]={0},z[1000]={0},b[1000][18];//f[i]==0则为正常 
+	scanf("%d",&N);
+	getchar();
+	char a[1000][18],M[1000]={0};
+	for(i=0;i<N;i++)
+	{
+		for(j=0;j<18;j++)
+			scanf("%c",&a[i][j]);
+		getchar();
+    }
+	for(i=0;i<N;i++)
+		for(j=0;j<17;j++)
+			if(a[i][j]<48 || a[i][j]>57)
+			{
+				flag++;
+				f[i]=1;
+				break;
+			}//标记前17个出现非数字的身份证号码 ，第一次检验是否出问题 
+	for(i=0;i<N;i++)
+	    if(f[i]==0)
+			for(j=0;j<17;j++)
+		    {
+				if(a[i][j]==48)b[i][j]=0;
+				if(a[i][j]==49)b[i][j]=1;
+				if(a[i][j]==50)b[i][j]=2;
+				if(a[i][j]==51)b[i][j]=3;
+				if(a[i][j]==52)b[i][j]=4;
+				if(a[i][j]==53)b[i][j]=5;
+				if(a[i][j]==54)b[i][j]=6;
+				if(a[i][j]==55)b[i][j]=7;
+				if(a[i][j]==56)b[i][j]=8;
+				if(a[i][j]==57)b[i][j]=9;
+			}//将字符数组转为整型数组 
+	for(i=0;i<N;i++)
+		if(f[i]==0)
+			for(j=0;j<17;j++)
+			{
+				if(j==0)sum[i]+=b[i][j]*7;
+				if(j==1)sum[i]+=b[i][j]*9;
+				if(j==2)sum[i]+=b[i][j]*10;
+				if(j==3)sum[i]+=b[i][j]*5;
+				if(j==4)sum[i]+=b[i][j]*8;
+				if(j==5)sum[i]+=b[i][j]*4;
+				if(j==6)sum[i]+=b[i][j]*2;
+				if(j==7)sum[i]+=b[i][j]*1;
+				if(j==8)sum[i]+=b[i][j]*6;
+				if(j==9)sum[i]+=b[i][j]*3;
+				if(j==10)sum[i]+=b[i][j]*7;
+				if(j==11)sum[i]+=b[i][j]*9;
+				if(j==12)sum[i]+=b[i][j]*10;
+				if(j==13)sum[i]+=b[i][j]*5;
+				if(j==14)sum[i]+=b[i][j]*8;
+				if(j==15)sum[i]+=b[i][j]*4;
+				if(j==16)sum[i]+=b[i][j]*2;
+			}//先求sum 
+	for(i=0;i<N;i++)
+		if(f[i]==0)
+			z[i]=sum[i]%11;//求z 
+	for(i=0;i<N;i++)
+		if(f[i]==0)
+		{
+			if(z[i]==0)M[i]='1';
+	    	if(z[i]==1)M[i]='0';
+			if(z[i]==2)M[i]='X';
+			if(z[i]==3)M[i]='9';
+			if(z[i]==4)M[i]='8';
+			if(z[i]==5)M[i]='7';
+			if(z[i]==6)M[i]='6';
+			if(z[i]==7)M[i]='5';
+			if(z[i]==8)M[i]='4';
+			if(z[i]==9)M[i]='3';
+			if(z[i]==10)M[i]='2';
+		}//求校验码 
+    for(i=0;i<N;i++)
+    	if(f[i]==0)
+    		if(a[i][17]!=M[i])
+    		{
+				f[i]=1;
+				flag++; 
+	    	}//标记校验码与第18位不同的身份证号码 
+	for(i=0;i<N;i++)
+		if(f[i]==1)
+		{
+			for(j=0;j<18;j++)
+				printf("%c",a[i][j]);
+			printf("\n");	
+	    }//输出所有有问题的身份证号码 
+	if(flag==0)
+		printf("All passed");
+	return 0;
+}
